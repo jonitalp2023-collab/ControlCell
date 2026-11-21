@@ -16,10 +16,10 @@
     const customers = new Map();
     let pending = 0, collected = 0;
     state.sales.forEach((sale) => {
-      const paid = sale.deposit;
-      const remaining = Math.max(0, sale.total - paid);
-      pending += remaining;
-      collected += paid;
+      const paidInstallments = sale.schedule.filter(due => due.paid).reduce((sum, due) => sum + due.amount, 0);
+      const unpaidInstallments = sale.schedule.filter(due => !due.paid).reduce((sum, due) => sum + due.amount, 0);
+      pending += unpaidInstallments;
+      collected += sale.deposit + paidInstallments;
       customers.set(sale.customer.toLowerCase(), { name:sale.customer, phone:sale.phone, count:(customers.get(sale.customer.toLowerCase())?.count || 0) + 1 });
     });
     $("stat-devices").textContent = state.sales.length;
@@ -39,7 +39,7 @@
 
   function tableRows(sales, withBalance) {
     return sales.map(sale => {
-      const balance = sale.total - sale.deposit;
+      const balance = sale.schedule.filter(due => !due.paid).reduce((sum, due) => sum + due.amount, 0);
       return `<tr><td>${escapeHtml(sale.customer)}</td><td>${escapeHtml(sale.brand + " " + sale.model)}</td><td>${dateText(sale.created)}</td><td><span class="pill ${balance === 0 ? "paid" : ""}">${balance === 0 ? "Pagado" : "En cuotas"}</span></td>${withBalance ? `<td>${money(balance)}</td>` : ""}</tr>`;
     }).join("");
   }
