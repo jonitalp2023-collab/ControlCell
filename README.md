@@ -1,31 +1,29 @@
-# Jonita Control
+# ControlCell
 
-Panel inicial para administrar ventas financiadas de teléfonos Android, clientes y cuotas mensuales.
+Panel privado para administrar ventas financiadas de teléfonos Android, clientes y cuotas mensuales.
 
-## Primera etapa implementada
+## Funciones conectadas
 
-- Panel de resumen con equipos, clientes, saldo pendiente y cobros.
-- Registro de ventas con cliente, marca, modelo, precio y entrega inicial.
+- Inicio de sesión de administrador mediante Supabase Auth.
+- Lectura y escritura de clientes, equipos, ventas, cuotas y pagos en Supabase.
 - Generación de cuotas mensuales de hasta 48 períodos.
 - Búsqueda de clientes y equipos.
-- Registro manual de pago de cuotas.
+- Registro de pagos y actualización del estado de las cuotas.
+- Resumen de ventas, saldo pendiente y cobros.
 - Interfaz adaptable a celular y computadora.
 
-## Ejecutar la vista previa
+## Configuración
 
-Abrí `index.html` en un navegador moderno. No requiere instalación para esta demostración.
+La aplicación usa la URL del proyecto Supabase y una clave publicable en el frontend. La clave publicable está diseñada para aplicaciones cliente; nunca colocar claves `service_role` ni secretos en estos archivos.
 
-## Estado técnico importante
+En Supabase, mantener habilitada la protección RLS de todas las tablas. Para que el acceso sea exclusivamente del administrador, desactivar los registros públicos de nuevos usuarios en Authentication y crear manualmente las cuentas autorizadas desde el panel de Supabase.
 
-Esta primera entrega es solamente una **vista previa funcional del frontend**. Los datos se mantienen en memoria y se pierden al recargar o cerrar la página. No cargues datos reales de clientes ni uses esta versión para administrar cobros reales.
+## Importante: estado de desarrollo
 
-Todavía faltan:
-- Inicio de sesión seguro y acceso exclusivo del administrador.
-- Base de datos y copias de seguridad.
-- Registro persistente y auditoría de pagos.
-- Pruebas automatizadas y validación de importes/fechas.
-- Aplicación Android complementaria.
+La integración inicial con Supabase está implementada, pero todavía debe probarse con la cuenta real del administrador. Antes de usarla para administrar cobros reales faltan pruebas completas de login, ventas, cuotas y pagos; manejo transaccional ante errores parciales; copias de seguridad; auditoría y endurecimiento de seguridad; y pruebas en distintos navegadores y celulares.
+
+No considerar esta versión lista para producción ni para publicar como aplicación Android hasta completar esas verificaciones.
 
 ## Seguridad y cumplimiento
 
-Cualquier restricción funcional del dispositivo deberá ser transparente, contar con autorización expresa e informada del comprador, cumplir las políticas de Android y la legislación aplicable, incluir avisos previos y un mecanismo de reclamo y restablecimiento al regularizar la deuda. No se implementará vigilancia oculta ni acceso a datos personales ajenos al funcionamiento del servicio.
+Cualquier restricción funcional del dispositivo deberá ser transparente, contar con autorización expresa e informada del comprador, cumplir las políticas de Android y la legislación aplicable, incluir avisos previos y un mecanismo de reclamo y restablecimiento al regularizar la deuda. No implementar vigilancia oculta ni acceso a datos personales ajenos al funcionamiento del servicio.
