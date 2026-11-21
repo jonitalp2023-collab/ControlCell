@@ -4,15 +4,29 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#172554">
-  <title>Jonita Control</title>
+  <title>ControlCell</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
+  <section id="login-screen" class="login-screen">
+    <form id="login-form" class="login-card">
+      <div class="login-brand"><span class="brand-mark">CC</span></div>
+      <p class="eyebrow">ACCESO PRIVADO</p>
+      <h1>ControlCell</h1>
+      <p class="login-subtitle">Ingresá con tu cuenta de administrador.</p>
+      <label>Correo electrónico<input name="email" type="email" autocomplete="username" required value="jonitalp2023@gmail.com"></label>
+      <label>Contraseña<input name="password" type="password" autocomplete="current-password" required placeholder="Tu contraseña"></label>
+      <p id="login-error" class="form-error" role="alert"></p>
+      <button id="login-submit" class="button button-primary login-submit" type="submit">Ingresar</button>
+      <small class="login-footnote">Acceso exclusivo del administrador. No hay registro público.</small>
+    </form>
+  </section>
+
+  <div class="app-shell hidden" id="app-shell">
     <aside class="sidebar">
-      <a class="brand" href="#" aria-label="Jonita Control inicio">
-        <span class="brand-mark">JC</span>
-        <span><strong>Jonita Control</strong><small>Administración</small></span>
+      <a class="brand" href="#dashboard" aria-label="ControlCell inicio">
+        <span class="brand-mark">CC</span>
+        <span><strong>ControlCell</strong><small>Administración</small></span>
       </a>
       <nav aria-label="Navegación principal">
         <a class="nav-link active" href="#dashboard" data-view="dashboard">▦ <span>Resumen</span></a>
@@ -20,19 +34,19 @@
         <a class="nav-link" href="#customers" data-view="customers">♙ <span>Clientes</span></a>
         <a class="nav-link" href="#payments" data-view="payments">＄ <span>Cuotas y pagos</span></a>
       </nav>
-      <div class="sidebar-bottom"><span class="status-dot"></span> Prototipo inicial <small>v0.1</small></div>
+      <div class="sidebar-bottom"><span class="status-dot"></span> Conectado <small>v0.2</small></div>
     </aside>
 
     <main class="main-content">
       <header class="topbar">
-        <div><p class="eyebrow">GESTIÓN DE FINANCIACIÓN</p><h1 id="page-title">Resumen</h1></div>
-        <button class="button button-primary" id="new-sale-button">＋ Nueva venta</button>
+        <div><p class="eyebrow">GESTIÓN DE FINANCIACIÓN</p><h1 id="page-title">Resumen</h1><p id="admin-email" class="admin-email"></p></div>
+        <div class="topbar-actions"><button class="button button-quiet" id="logout-button">Salir</button><button class="button button-primary" id="new-sale-button">＋ Nueva venta</button></div>
       </header>
 
       <section id="dashboard-view" class="view">
         <div class="welcome">
           <div><h2>Tu negocio, bajo control.</h2><p>Un vistazo a las ventas financiadas y los pagos registrados.</p></div>
-          <span class="welcome-icon">JC</span>
+          <span class="welcome-icon">CC</span>
         </div>
         <div class="stats-grid">
           <article class="stat-card"><span>Equipos vendidos</span><strong id="stat-devices">0</strong><small>Ventas registradas</small></article>
@@ -60,17 +74,17 @@
         <div class="toolbar"><div><h2>Cuotas y pagos</h2><p>Seguimiento de vencimientos y cobros.</p></div></div>
         <div class="panel"><div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Equipo</th><th>Cuota</th><th>Vencimiento</th><th>Estado</th><th></th></tr></thead><tbody id="payments-table"></tbody></table></div><div id="payments-empty" class="empty-state compact">Las cuotas aparecerán acá cuando registres ventas.</div></div>
       </section>
-      <footer>Jonita Control · Prototipo de desarrollo. No cargues datos personales reales todavía.</footer>
+      <footer>ControlCell · Datos guardados en tu base de datos privada.</footer>
     </main>
   </div>
 
   <dialog id="sale-dialog" class="sale-dialog">
     <form id="sale-form">
       <div class="dialog-heading"><div><p class="eyebrow">NUEVA OPERACIÓN</p><h2>Registrar venta</h2></div><button type="button" class="close-button" id="close-dialog" aria-label="Cerrar">×</button></div>
-      <label>Nombre del cliente<input name="customer" required maxlength="80" placeholder="Ej. Juan Pérez"></label>
+      <label>Nombre del cliente<input name="customer" required maxlength="120" placeholder="Ej. Juan Pérez"></label>
       <label>Teléfono de contacto<input name="phone" type="tel" maxlength="30" placeholder="Opcional"></label>
       <div class="form-row">
-        <label>Marca<select name="brand" required><option value="">Elegir marca</option><option>Motorola</option><option>Samsung</option><option>Xiaomi</option><option>TCL</option><option>Otra</option></select></label>
+        <label>Marca<select name="brand" required><option value="">Elegir marca</option><option>Motorola</option><option>Samsung</option><option>Xiaomi</option><option>TCL</option><option value="Otros">Otros</option></select></label>
         <label>Modelo<input name="model" required maxlength="80" placeholder="Ej. Moto G"></label>
       </div>
       <div class="form-row">
@@ -83,9 +97,9 @@
       </div>
       <p class="form-note">La cuota se calcula sobre el saldo luego de la entrega inicial. Revisá los importes antes de guardar.</p>
       <p id="form-error" class="form-error" role="alert"></p>
-      <div class="dialog-actions"><button type="button" class="button button-quiet" id="cancel-dialog">Cancelar</button><button type="submit" class="button button-primary">Guardar venta</button></div>
+      <div class="dialog-actions"><button type="button" class="button button-quiet" id="cancel-dialog">Cancelar</button><button id="save-sale-button" type="submit" class="button button-primary">Guardar venta</button></div>
     </form>
   </dialog>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
