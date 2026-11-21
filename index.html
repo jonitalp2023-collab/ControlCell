@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172554">
+  <title>Jonita Control</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Jonita Control inicio">
+        <span class="brand-mark">JC</span>
+        <span><strong>Jonita Control</strong><small>Administración</small></span>
+      </a>
+      <nav aria-label="Navegación principal">
+        <a class="nav-link active" href="#dashboard" data-view="dashboard">▦ <span>Resumen</span></a>
+        <a class="nav-link" href="#devices" data-view="devices">▣ <span>Equipos y ventas</span></a>
+        <a class="nav-link" href="#customers" data-view="customers">♙ <span>Clientes</span></a>
+        <a class="nav-link" href="#payments" data-view="payments">＄ <span>Cuotas y pagos</span></a>
+      </nav>
+      <div class="sidebar-bottom"><span class="status-dot"></span> Prototipo inicial <small>v0.1</small></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><p class="eyebrow">GESTIÓN DE FINANCIACIÓN</p><h1 id="page-title">Resumen</h1></div>
+        <button class="button button-primary" id="new-sale-button">＋ Nueva venta</button>
+      </header>
+
+      <section id="dashboard-view" class="view">
+        <div class="welcome">
+          <div><h2>Tu negocio, bajo control.</h2><p>Un vistazo a las ventas financiadas y los pagos registrados.</p></div>
+          <span class="welcome-icon">JC</span>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><span>Equipos vendidos</span><strong id="stat-devices">0</strong><small>Ventas registradas</small></article>
+          <article class="stat-card"><span>Clientes</span><strong id="stat-customers">0</strong><small>Clientes registrados</small></article>
+          <article class="stat-card"><span>Cuotas pendientes</span><strong id="stat-pending">$ 0</strong><small>Saldo por cobrar</small></article>
+          <article class="stat-card"><span>Cobrado</span><strong id="stat-collected">$ 0</strong><small>Pagos registrados</small></article>
+        </div>
+        <div class="panel">
+          <div class="panel-heading"><div><h2>Actividad reciente</h2><p>Últimas ventas cargadas</p></div><button class="text-button" data-go="devices">Ver equipos →</button></div>
+          <div id="recent-sales" class="empty-state"><span class="empty-icon">▤</span><strong>Todavía no hay ventas</strong><p>Cuando registres una venta, aparecerá acá.</p><button class="button button-secondary" id="empty-new-sale">Registrar primera venta</button></div>
+        </div>
+      </section>
+
+      <section id="devices-view" class="view hidden">
+        <div class="toolbar"><div><h2>Equipos y ventas</h2><p>Teléfonos vendidos con financiación.</p></div><button class="button button-primary" id="devices-new-sale">＋ Nueva venta</button></div>
+        <div class="panel"><div class="search-wrap"><input id="device-search" type="search" placeholder="Buscar cliente, marca o modelo…" aria-label="Buscar equipos"></div><div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Equipo</th><th>Venta</th><th>Estado</th><th>Saldo</th></tr></thead><tbody id="devices-table"></tbody></table></div><div id="devices-empty" class="empty-state compact">No hay equipos registrados todavía.</div></div>
+      </section>
+
+      <section id="customers-view" class="view hidden">
+        <div class="toolbar"><div><h2>Clientes</h2><p>Personas con una compra registrada.</p></div><button class="button button-primary" id="customers-new-sale">＋ Registrar cliente</button></div>
+        <div class="panel"><div class="search-wrap"><input id="customer-search" type="search" placeholder="Buscar por nombre o teléfono…" aria-label="Buscar clientes"></div><div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Teléfono de contacto</th><th>Equipos</th></tr></thead><tbody id="customers-table"></tbody></table></div><div id="customers-empty" class="empty-state compact">Todavía no hay clientes.</div></div>
+      </section>
+
+      <section id="payments-view" class="view hidden">
+        <div class="toolbar"><div><h2>Cuotas y pagos</h2><p>Seguimiento de vencimientos y cobros.</p></div></div>
+        <div class="panel"><div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Equipo</th><th>Cuota</th><th>Vencimiento</th><th>Estado</th><th></th></tr></thead><tbody id="payments-table"></tbody></table></div><div id="payments-empty" class="empty-state compact">Las cuotas aparecerán acá cuando registres ventas.</div></div>
+      </section>
+      <footer>Jonita Control · Prototipo de desarrollo. No cargues datos personales reales todavía.</footer>
+    </main>
+  </div>
+
+  <dialog id="sale-dialog" class="sale-dialog">
+    <form id="sale-form">
+      <div class="dialog-heading"><div><p class="eyebrow">NUEVA OPERACIÓN</p><h2>Registrar venta</h2></div><button type="button" class="close-button" id="close-dialog" aria-label="Cerrar">×</button></div>
+      <label>Nombre del cliente<input name="customer" required maxlength="80" placeholder="Ej. Juan Pérez"></label>
+      <label>Teléfono de contacto<input name="phone" type="tel" maxlength="30" placeholder="Opcional"></label>
+      <div class="form-row">
+        <label>Marca<select name="brand" required><option value="">Elegir marca</option><option>Motorola</option><option>Samsung</option><option>Xiaomi</option><option>TCL</option><option>Otra</option></select></label>
+        <label>Modelo<input name="model" required maxlength="80" placeholder="Ej. Moto G"></label>
+      </div>
+      <div class="form-row">
+        <label>Precio total ($)<input name="total" type="number" min="1" step="0.01" required placeholder="0"></label>
+        <label>Entrega inicial ($)<input name="deposit" type="number" min="0" step="0.01" value="0" required></label>
+      </div>
+      <div class="form-row">
+        <label>Cantidad de cuotas<input name="installments" type="number" min="1" max="48" value="6" required></label>
+        <label>Primera fecha de vencimiento<input name="firstDue" type="date" required></label>
+      </div>
+      <p class="form-note">La cuota se calcula sobre el saldo luego de la entrega inicial. Revisá los importes antes de guardar.</p>
+      <p id="form-error" class="form-error" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="button button-quiet" id="cancel-dialog">Cancelar</button><button type="submit" class="button button-primary">Guardar venta</button></div>
+    </form>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
