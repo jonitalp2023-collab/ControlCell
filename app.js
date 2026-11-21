@@ -34,7 +34,6 @@
     $("customers-empty").classList.toggle("hidden", customers.size > 0);
     $("payments-table").innerHTML = state.sales.flatMap(sale => sale.schedule.map((due, index) => `<tr><td>${escapeHtml(sale.customer)}</td><td>${escapeHtml(sale.brand + " " + sale.model)}</td><td>${index+1}/${sale.schedule.length} · ${money(due.amount)}</td><td>${dateText(due.date)}</td><td><span class="pill ${due.paid ? "paid" : ""}">${due.paid ? "Pagada" : "Pendiente"}</span></td><td>${due.paid ? "" : `<button class="table-action" data-pay="${sale.id}:${index}">Registrar pago</button>`}</td></tr>`)).join("");
     $("payments-empty").classList.toggle("hidden", state.sales.length > 0);
-    $("recent-sales").querySelector("#empty-new-sale")?.addEventListener("click", openDialog);
   }
 
   function tableRows(sales, withBalance) {
@@ -99,7 +98,6 @@
   $("cancel-dialog").addEventListener("click", () => $("sale-dialog").close());
   $("device-search").addEventListener("input", render);
   $("customer-search").addEventListener("input", render);
-  document.querySelectorAll("[data-view]").forEach(link => link.addEventListener("click", () => navigate(link.dataset.view)));
   const initial = location.hash.replace("#", "");
   navigate(["devices","customers","payments"].includes(initial) ? initial : "dashboard");
   render();
