@@ -62,7 +62,7 @@ function render(){
   const sale=state.sales.find(item=>item.id===due.sale_id); if(!sale) return "";
   const customer=customersById.get(sale.customer_id), device=devicesById.get(sale.device_id);
   const status=due.status==="paid"?"Pagada":(due.status==="overdue"||due.due_date<new Date().toISOString().slice(0,10)?"Vencida":"Pendiente");
-  return "<tr><td>"+escapeHtml(customer?.full_name||"—")+"</td><td>"+escapeHtml((device?.brand||"")+" "+(device?.model||""))+"</td><td>"+due.installment_number+" · "+money(due.amount)+"</td><td>"+dateText(due.due_date)+"</td><td><span class=\\"pill "+(due.status==="paid"?"paid":"")+"\\">"+status+"</span></td><td>"+(due.status==="paid"?"":'<button class="table-action" data-pay="'+due.id+'">Registrar pago</button>')+"</td></tr>";
+  return "<tr><td>"+escapeHtml(customer?.full_name||"—")+"</td><td>"+escapeHtml((device?.brand||"")+" "+(device?.model||""))+"</td><td>"+due.installment_number+" · "+money(due.amount)+"</td><td>"+dateText(due.due_date)+"</td><td><span class=\"pill "+(due.status==="paid"?"paid":"")+"\">"+status+"</span></td><td>"+(due.status==="paid"?"":'<button class="table-action" data-pay="'+due.id+'">Registrar pago</button>')+"</td></tr>";
  }).join("");
  $("payments-table").innerHTML=paymentRows; $("payments-empty").classList.toggle("hidden",state.installments.length>0);
 }
@@ -71,7 +71,7 @@ function tableRows(sales,withBalance,customersById,devicesById,installmentsBySal
   const customer=customersById.get(sale.customer_id), device=devicesById.get(sale.device_id);
   const dues=installmentsBySale.get(sale.id)||[];
   const balance=dues.filter(item=>item.status!=="paid").reduce((sum,item)=>sum+Number(item.amount),0);
-  return "<tr><td>"+escapeHtml(customer?.full_name||"—")+"</td><td>"+escapeHtml((device?.brand||"")+" "+(device?.model||""))+"</td><td>"+dateText(sale.sale_date)+"</td><td><span class=\\"pill "+(balance===0?"paid":"")+"\\">"+(balance===0?"Pagado":"En cuotas")+"</span></td>"+(withBalance?"<td>"+money(balance)+"</td>":"")+"</tr>";
+  return "<tr><td>"+escapeHtml(customer?.full_name||"—")+"</td><td>"+escapeHtml((device?.brand||"")+" "+(device?.model||""))+"</td><td>"+dateText(sale.sale_date)+"</td><td><span class=\"pill "+(balance===0?"paid":"")+"\">"+(balance===0?"Pagado":"En cuotas")+"</span></td>"+(withBalance?"<td>"+money(balance)+"</td>":"")+"</tr>";
  }).join("");
 }
 function filteredSales(query){
